@@ -19,7 +19,7 @@ function RootRoute(){
 	const currentUser = LC.User.current();
 	return (
 		<Routes>
-			<Route path="/" element={<App />} />
+			<Route path="/" element={<SignIn />} />
 			<Route
 				path="creator"
 				element={

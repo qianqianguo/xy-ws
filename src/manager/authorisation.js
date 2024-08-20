@@ -138,6 +138,10 @@ export default class Authorisations extends React.Component{
 							/>
 							<div style={{alignItems: 'space-between'}}>
 								<div style={{color: 'gray'}}>
+									性别：<span style={{color: 'darkgray'}}>{item?.sex == 1 ? '男' : '女'}</span>
+								</div>
+								<br/>
+								<div style={{color: 'gray'}}>
 									手机号码：<span style={{color: 'darkgray'}}>{item?.mobilePhoneNumber}</span>
 								</div>
 								<br/>
@@ -384,6 +388,8 @@ export default class Authorisations extends React.Component{
 			let uid = isIdentify ? r[i]?.attributes?.user?.id : r[i]?.id;
 			let identifyId = isIdentify ? r[i]?.id : user?.identifyAuth?.id;
 			let auth_reason = isIdentify ? r[i]?.attributes?.reason : '未提审认证';
+			let sex = user?.sex;
+
 			let user_obj = {
 				id: uid,
 				identifyId: identifyId,
@@ -404,6 +410,7 @@ export default class Authorisations extends React.Component{
 				logOffDate: user?.logOffDate,
 				isLocked: user?.isLocked,
 				vip_expiration_date: user?.vip_expiration_date,
+				sex: sex,
 			}
 			users.push(user_obj);
 		}
