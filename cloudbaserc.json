@@ -1,0 +1,19 @@
+{
+    "envId": "docs-0ggu5ux357518ea5",
+    "version": "2.0",
+    "$schema": "https://framework-1258016615.tcloudbaseapp.com/schema/latest.json",
+    "functionRoot": "./functions",
+    "functions": [],
+    "framework": {
+        "name": "xyws",
+        "plugins": {
+            "react": {
+                "use": "@cloudbase/framework-plugin-website",
+                "inputs": {
+                    "buildCommand": "npm run build",
+                    "outputPath": "build"
+                }
+            }
+        }
+    }
+}

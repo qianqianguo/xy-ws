@@ -1,0 +1,25 @@
+.text{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    /* autoprefixer   : ignore next */
+    -webkit-box-orient: vertical;
+}
+
+.ant-table-tbody > tr.ant-table-row:hover > td {
+    background: none !important;/*可以禁止背景颜色改变*/
+}
+table:hover,
+tr:hover,
+thead:hover {
+    background-color: #17181B;
+    font-weight: 400;
+}
+.ant-table-tbody {
+    pointer-events: none; /*此方法可以有效禁止背景色hover，但无法点击*/
+    background-color: #17181B;
+    font-weight: 400;
+    border-width: 10px;
+    border-color: red;
+}
