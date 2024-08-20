@@ -5,7 +5,7 @@ import {
 	Routes,
 } from "react-router-dom";
 import LC from 'leancloud-storage';
-import App from "../App";
+// import App from "../App";
 import Login from "../creator/login";
 import Create from "../creator/create";
 import SignIn from "../manager/sign_in";
