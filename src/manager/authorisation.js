@@ -311,12 +311,15 @@ export default class Authorisations extends React.Component{
 					/>
 				}
 				{
-					this.state.review_type === 2 &&
+					this.state.modalType != 2 && this.state.review_type === 2 &&
 					<DatePicker
 						style={{minWidth: 200, marginLeft: 22}}
 						locale={locale}
 						placeholder={'请选择该用户生日'}
 						showToday={false}
+						hoverBg={'white'}
+						multipleItemBg='#ffffff'
+						multipleSelectorBgDisabled={'#ffffff'}
 						onChange={(date, dateString) => {
 							console.log(date, dateString);
 							this.user_birthday = {
@@ -387,7 +390,8 @@ export default class Authorisations extends React.Component{
 			let auth_state = isIdentify ? r[i]?.attributes?.status : user?.identifyAuth?.attributes?.status ?? '';
 			let uid = isIdentify ? r[i]?.attributes?.user?.id : r[i]?.id;
 			let identifyId = isIdentify ? r[i]?.id : user?.identifyAuth?.id;
-			let auth_reason = isIdentify ? r[i]?.attributes?.reason : '未提审认证';
+			let auth_reason = isIdentify ? r[i]?.attributes?.reason : (user?.identifyAuth?.attributes?.reason || '未提审认证');
+			
 			let sex = user?.sex;
 
 			let user_obj = {
@@ -456,7 +460,7 @@ export default class Authorisations extends React.Component{
 		this.setState({
 			confirmLoading: true,
 		});
-		//2头像1身份证0注销3封号
+		//0注销1身份证2头像3封号
 		if(modalType === 2){
 			let params = {
 				avatar_state: review_type,
@@ -487,7 +491,7 @@ export default class Authorisations extends React.Component{
 			})
 		}
 		if(modalType === 1){
-			if(!this.user_birthday){
+			if(!this.user_birthday && review_type !== 0){
 				message.warning('请选择用户生日');
 				this.setState({
 					confirmLoading: false,
@@ -571,19 +575,18 @@ export default class Authorisations extends React.Component{
 				message.success(this.indexIsLocked ? '已完成封号处理' : '解除封号成功');
 				this.selItem.isLocked = this.indexIsLocked;
 				this.forceUpdate();
-				IMClass?.getServiceConversationAndSendMsg(()=>{
-					console.log('已经完成封号处理');
-				}, this.selItem?.id, '因你存在严重的违规平台行为，已给予封号处理', 2);
+				let reason_description = '因你存在严重的违规平台行为，已给予封号处理';
+				this.sendSystemRefresh(reason_description, 2);
 			}).catch(err=>{
 				this.handleReviewEnd();
 				message.error('封号处理发生错误');
 			})
 		}
 	};
-	sendSystemRefresh(reason_description){
+	sendSystemRefresh(reason_description, refreshType = 3){
 		IMClass?.getServiceConversationAndSendMsg(()=>{
-			console.log('完成消息发送成功');
-		}, this.selItem?.id, reason_description, 3);
+			console.log('完成对客户端指定用户的消息发送');
+		}, this.selItem?.id, reason_description, refreshType);
 	}
 	handleReviewEnd(){
 		this.setState({
