@@ -509,7 +509,7 @@ export default class Authorisations extends React.Component{
 				true).then(res=>{
 				Http.put(
 					`/users/${this.selItem?.id ?? ''}`,
-					{isAuthentication: true, age: this.user_birthday,},
+					{isAuthentication: review_type == 0 ? false : true, age: this.user_birthday,},
 					true).then(res=>{
 					//设置身份操作完成
 					this.handleReviewEnd();
