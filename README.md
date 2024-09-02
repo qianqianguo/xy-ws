@@ -10,3 +10,6 @@
 
 
 部署在LC按官方操作即可
+
+部署github，需要先生成静态文件，然后在部署npm run deploy
+

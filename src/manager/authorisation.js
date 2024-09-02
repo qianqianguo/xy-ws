@@ -16,9 +16,9 @@ import {
 import locale from 'antd/es/date-picker/locale/zh_CN';
 import 'dayjs/locale/zh-cn';
 import placePic from '../assert/images/empty.png';
-import {NumericInput} from "../component/NumberInput";
+import { NumericInput } from "../component/NumberInput";
 import Http from "../util/http";
-import {IMClass} from "../Classes/IMClass";
+import { IMClass } from "../Classes/IMClass";
 import { object } from "prop-types";
 const { Option } = Select;
 
@@ -28,10 +28,10 @@ const pStyle = {
 	display: 'block',
 };
 
-export default class Authorisations extends React.Component{
+export default class Authorisations extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state={
+		this.state = {
 			visible: false,
 			listData: [],
 			lockVisible: false,
@@ -41,6 +41,7 @@ export default class Authorisations extends React.Component{
 			modalTitle: '',
 			reason_description: '',
 			review_description: null,
+			isTimeout: false
 		}
 		this.selItem = null;
 		this.user_birthday = null;
@@ -48,21 +49,21 @@ export default class Authorisations extends React.Component{
 	componentDidMount() {
 		this.searchUsers();
 	}
-	componentWillUnmount() {}
+	componentWillUnmount() { }
 	showDrawer = () => {
 		this.setState({
 			visible: true,
 		});
 	};
-	
+
 	onClose = () => {
 		this.setState({
 			visible: false,
 		});
 	};
 	render() {
-		const {lockVisible, confirmLoading, listData, search_type, phoneNumber} = this.state;
-		return <Layout style={{minHeight: '100vh'}}>
+		const { lockVisible, confirmLoading, listData, search_type, phoneNumber } = this.state;
+		return <Layout style={{ minHeight: '100vh' }}>
 			<div style={{
 				margin: 12,
 				minHeight: 88,
@@ -72,7 +73,7 @@ export default class Authorisations extends React.Component{
 				backgroundColor: 'white'
 			}}>
 				<List
-					style={{width: 'auto'}}
+					style={{ width: 'auto' }}
 					itemLayout="vertical"
 					size="large"
 					pagination={{
@@ -99,7 +100,7 @@ export default class Authorisations extends React.Component{
 						</div>
 					}
 					footer={
-						<div/>
+						<div />
 					}
 					renderItem={item => (
 						<List.Item
@@ -108,13 +109,13 @@ export default class Authorisations extends React.Component{
 							extra={
 								<div>
 									<Zmage
-										style={{margin: 12}}
+										style={{ margin: 12 }}
 										width={256}
 										alt="auth"
 										src={item?.auth_zm !== '' ? item?.auth_zm : placePic}
 									/>
 									<Zmage
-										style={{margin: 12}}
+										style={{ margin: 12 }}
 										width={256}
 										alt="auth"
 										src={item?.auth_fm !== '' ? item?.auth_fm : placePic}
@@ -136,88 +137,88 @@ export default class Authorisations extends React.Component{
 									</div>
 								}
 							/>
-							<div style={{alignItems: 'space-between'}}>
-								<div style={{color: 'gray'}}>
-									性别：<span style={{color: 'darkgray'}}>{item?.sex == 1 ? '男' : '女'}</span>
+							<div style={{ alignItems: 'space-between' }}>
+								<div style={{ color: 'gray' }}>
+									性别：<span style={{ color: 'darkgray' }}>{item?.sex == 1 ? '男' : '女'}</span>
 								</div>
-								<br/>
-								<div style={{color: 'gray'}}>
-									手机号码：<span style={{color: 'darkgray'}}>{item?.mobilePhoneNumber}</span>
+								<br />
+								<div style={{ color: 'gray' }}>
+									手机号码：<span style={{ color: 'darkgray' }}>{item?.mobilePhoneNumber}</span>
 								</div>
-								<br/>
-								<Card style={{backgroundColor: "ghostwhite"}}>
-									<div style={{color: 'gray'}}>
-										头像认证状态：<span style={{color: 'darkgray'}}>{item?.avatar_state === 1 ? '待审核' : item?.avatar_state === 2 ? '已认证' : '未认证'}</span>
+								<br />
+								<Card style={{ backgroundColor: "ghostwhite" }}>
+									<div style={{ color: 'gray' }}>
+										头像认证状态：<span style={{ color: 'darkgray' }}>{item?.avatar_state === 1 ? '待审核' : item?.avatar_state === 2 ? '已认证' : '未认证'}</span>
 										<a
-											style={{color: 'blue', marginLeft: 22}}
-											onClick={()=>{
+											style={{ color: 'blue', marginLeft: 22 }}
+											onClick={() => {
 												this.selItem = item;
 												this.showModal('审核头像信息', 2);
 											}}>审核</a>
 									</div>
-									<div style={{color: 'gray'}}>
-										<br/>
-										上次认证描述：<span style={{color: 'darkgray'}}>{item?.avatar_reason ?? '未提审认证'}</span>
+									<div style={{ color: 'gray' }}>
+										<br />
+										上次认证描述：<span style={{ color: 'darkgray' }}>{item?.avatar_reason ?? '未提审认证'}</span>
 									</div>
 								</Card>
-								<br/>
-								<Card style={{backgroundColor: "ghostwhite"}}>
-									<div style={{color: 'gray'}}>
-										身份认证状态：<span style={{color: 'darkgray'}}>
-										{item?.auth_state === 1 ? '待审核' : item?.auth_state === 2 ? '已认证' : item?.auth_state === 3 ? '未通过' : '未认证'}
-									</span>
+								<br />
+								<Card style={{ backgroundColor: "ghostwhite" }}>
+									<div style={{ color: 'gray' }}>
+										身份认证状态：<span style={{ color: 'darkgray' }}>
+											{item?.auth_state === 1 ? '待审核' : item?.auth_state === 2 ? '已认证' : item?.auth_state === 3 ? '未通过' : '未认证'}
+										</span>
 										<a
-											style={{color: 'blue', marginLeft: 22}}
-											onClick={()=>{
+											style={{ color: 'blue', marginLeft: 22 }}
+											onClick={() => {
 												this.selItem = item;
 												this.showModal('审核身份信息', 1);
 											}}>审核</a>
 									</div>
-									<div style={{color: 'gray'}}>
-										<br/>
-										上次认证描述：<span style={{color: 'darkgray'}}>{item?.auth_reason ?? '未提审认证'}</span>
+									<div style={{ color: 'gray' }}>
+										<br />
+										上次认证描述：<span style={{ color: 'darkgray' }}>{item?.auth_reason ?? '未提审认证'}</span>
 									</div>
 								</Card>
-								<br/>
-								<Card style={{backgroundColor: "ghostwhite"}}>
-									<div style={{color: 'gray'}}>
-										用户申请注销：<span style={{color: 'darkgray'}}>{item?.isLogOff ? '已申请' : '未申请'}</span>
+								<br />
+								<Card style={{ backgroundColor: "ghostwhite" }}>
+									<div style={{ color: 'gray' }}>
+										用户申请注销：<span style={{ color: 'darkgray' }}>{item?.isLogOff ? '已申请' : '未申请'}</span>
 										{
-											<a style={{color: 'blue', marginLeft: 22}} onClick={()=>{
+											<a style={{ color: 'blue', marginLeft: 22 }} onClick={() => {
 												this.selItem = item;
 												this.showModal('提示', 0);
 											}}>注销</a>
 										}
 									</div>
 									{
-										item?.isLogOff && <div style={{color: 'gray'}}>
-											<br/>
-											提交注销日期：<span style={{color: 'darkgray'}}>
-										{
-											item?.logOffDate
-												? moment(item?.logOffDate).format('YYYY.MM.DD  HH:mm:ss')
-												: 'xxxx.xx.xx'
-										}
-									</span>
+										item?.isLogOff && <div style={{ color: 'gray' }}>
+											<br />
+											提交注销日期：<span style={{ color: 'darkgray' }}>
+												{
+													item?.logOffDate
+														? moment(item?.logOffDate).format('YYYY.MM.DD  HH:mm:ss')
+														: 'xxxx.xx.xx'
+												}
+											</span>
 										</div>
 									}
 								</Card>
-								<br/>
-								<Card style={{backgroundColor: "ghostwhite"}}>
-									<div style={{color: 'gray'}}>
-										会员截止时间：<span style={{color: 'darkgray'}}>{
-										item?.vip_expiration_date
-											? moment(item?.vip_expiration_date).format('YYYY.MM.DD  HH:mm:ss')
-											: 'xxxx.xx.xx'
-									}</span>
+								<br />
+								<Card style={{ backgroundColor: "ghostwhite" }}>
+									<div style={{ color: 'gray' }}>
+										会员截止时间：<span style={{ color: 'darkgray' }}>{
+											item?.vip_expiration_date
+												? moment(item?.vip_expiration_date).format('YYYY.MM.DD  HH:mm:ss')
+												: 'xxxx.xx.xx'
+										}</span>
 									</div>
-									<br/>
-									<div style={{color: 'gray'}}>
+									<br />
+									<div style={{ color: 'gray' }}>
 										是否给予封号：
 										<Switch
 											style={{}}
 											checked={item?.isLocked}
-											onClick={(isLocked)=>{
+											onClick={(isLocked) => {
 												this.selItem = item;
 												this.indexIsLocked = isLocked;
 												this.showModal('提示', 3);
@@ -237,36 +238,36 @@ export default class Authorisations extends React.Component{
 					title="搜索查询"
 					getContainer={false}
 					height={256}
-					headerStyle={{height: 68, fontSize: 12}}
+					headerStyle={{ height: 68, fontSize: 12 }}
 				>
-					<p style={{ ...pStyle}}>选择类型</p>
+					<p style={{ ...pStyle }}>选择类型</p>
 					<Row style={{}}>
-						<Select defaultValue={0} style={{minWidth: 288}} onChange={this.handleChange}>
+						<Select defaultValue={0} style={{ minWidth: 288 }} onChange={this.handleChange}>
 							<Option value={0}>按待审核身份查询</Option>
 							<Option value={1}>按待审核头像查询</Option>
 							<Option value={2}>按用户手机号查询</Option>
 							<Option value={3}>按用户注销申请查询</Option>
 						</Select>
 						{search_type === 2 && <NumericInput
-							style={{width: 200, marginLeft: 22}}
-							onChange={(value)=>{
+							style={{ width: 200, marginLeft: 22 }}
+							onChange={(value) => {
 								this.setState({
 									phoneNumber: value,
 								})
 							}}
 							value={this.state.phoneNumber}
 						/>}
-						<Button type="primary" style={{marginLeft: 22, width: 79}} onClick={()=>{
-							let isPhoneNumber =/^1[3456789]\d{9}$/;
-							if(search_type === 2 && !isPhoneNumber.test(phoneNumber)){
+						<Button type="primary" style={{ marginLeft: 22, width: 79 }} onClick={() => {
+							let isPhoneNumber = /^1[3456789]\d{9}$/;
+							if (search_type === 2 && !isPhoneNumber.test(phoneNumber)) {
 								message.warning('请输入正确手机号');
 								return;
 							}
 							this.onClose();
 							this.openGetUserMessage();
 						}}>
-							<div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-								<SearchOutlined/>
+							<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+								<SearchOutlined />
 								<div>搜索</div>
 							</div>
 						</Button>
@@ -288,32 +289,45 @@ export default class Authorisations extends React.Component{
 			</div>
 		</Layout>
 	}
-	renderReviewModal(){
+	renderReviewModal() {
 		return (
 			<>
 				<Select
 					placeholder={'请选择'}
 					value={this.state.review_description}
-					style={{minWidth: 168, marginTop: 12, marginBottom: 12}}
+					style={{ minWidth: 168, marginTop: 12, marginBottom: 12 }}
 					onChange={this.handleReviewAuth}>
 					<Option value={2}>通过</Option>
 					<Option value={0}>拒绝</Option>
 				</Select>
+				{this.state.modalType == 1 && this.state.review_type === 0 &&
+					<div style={{ color: 'gray', marginTop: 12, marginBottom: 12 }}>
+						是否延迟审核：
+						<Switch
+							style={{}}
+							checked={this.state.isTimeout}
+							onClick={(isTimeout) => {
+								this.setState({
+									isTimeout: isTimeout
+								})
+							}}
+						/>
+					</div>}
 				{
 					this.state.review_type === 0 &&
 					<Input.TextArea
 						rows={4}
 						value={this.state?.reason_description ?? ''}
 						placeholder={'拒绝原因...'}
-						onChange = {({ target: { value } }) => {
+						onChange={({ target: { value } }) => {
 							this.setState({ reason_description: value });
 						}}
 					/>
 				}
 				{
-					this.state.modalType != 2 && this.state.review_type === 2 &&
+					this.state.modalType == 1 && this.state.review_type === 2 &&
 					<DatePicker
-						style={{minWidth: 200, marginLeft: 22}}
+						style={{ minWidth: 200, marginLeft: 22 }}
 						locale={locale}
 						placeholder={'请选择该用户生日'}
 						showToday={false}
@@ -329,7 +343,7 @@ export default class Authorisations extends React.Component{
 						}}
 					/>
 				}
-				<br/>
+				<br />
 			</>
 		)
 	}
@@ -337,22 +351,22 @@ export default class Authorisations extends React.Component{
 		message.loading({ content: '正在查询...', key });
 		this.searchUsers();
 	};
-	searchUsers(){
-		const {search_type, phoneNumber} = this.state;
+	searchUsers() {
+		const { search_type, phoneNumber } = this.state;
 		let query = new LC.Query('_User');
 		query.ascending('updatedAt'); //按时间递减查询
-		if(search_type === 0){
+		if (search_type === 0) {
 			//先查认证表，再携带用户
 			this.searchIdentifyAuth();
 			return;
 		}
-		if(search_type === 1){
+		if (search_type === 1) {
 			query.equalTo('avatar_state', 1);
 		}
-		if(search_type === 2){
+		if (search_type === 2) {
 			query.equalTo('mobilePhoneNumber', '+86' + phoneNumber); //头像审核通过
 		}
-		if(search_type === 3){
+		if (search_type === 3) {
 			query.equalTo('isLogOff', true);
 		}
 		query.include('identifyAuth');
@@ -364,7 +378,7 @@ export default class Authorisations extends React.Component{
 			this.setUsers(r);
 		});
 	}
-	searchIdentifyAuth(){
+	searchIdentifyAuth() {
 		let query = new LC.Query('IdentifyAuth');
 		query.equalTo('status', 1); //头像审核通过
 		query.include('user');
@@ -375,23 +389,23 @@ export default class Authorisations extends React.Component{
 			this.setUsers(res, true);
 		});
 	}
-	setUsers(r, isIdentify = false){
+	setUsers(r, isIdentify = false) {
 		let users = [];
-		for(let i = 0; i<r.length; i++){
+		for (let i = 0; i < r.length; i++) {
 			let user = isIdentify ? r[i]?.attributes?.user?.attributes : r[i]?.attributes;
 			let avatar_url = user?.avatar?.attributes?.url ?? 'http://';
 			let avatarId = user?.avatar?.get('objectId');
 			let idCardBackground = isIdentify ? r[i]?.attributes?.idCardBackground?.attributes?.url : user?.identifyAuth?.attributes?.idCardBackground?.attributes?.url ?? '';
 			let idCardFront = isIdentify ? r[i]?.attributes?.idCardFront?.attributes?.url : user?.identifyAuth?.attributes?.idCardFront?.attributes?.url ?? '';
-			
+
 			let idCardBackgroundId = isIdentify ? r[i]?.attributes?.idCardBackground?.get('objectId') : user?.identifyAuth?.attributes?.idCardBackground?.get('objectId');
 			let idCardFrontId = isIdentify ? r[i]?.attributes?.idCardFront?.get('objectId') : user?.identifyAuth?.attributes?.idCardFront?.get('objectId');
-			
+
 			let auth_state = isIdentify ? r[i]?.attributes?.status : user?.identifyAuth?.attributes?.status ?? '';
 			let uid = isIdentify ? r[i]?.attributes?.user?.id : r[i]?.id;
 			let identifyId = isIdentify ? r[i]?.id : user?.identifyAuth?.id;
 			let auth_reason = isIdentify ? r[i]?.attributes?.reason : (user?.identifyAuth?.attributes?.reason || '未提审认证');
-			
+
 			let sex = user?.sex;
 
 			let user_obj = {
@@ -422,14 +436,14 @@ export default class Authorisations extends React.Component{
 			listData: users,
 		});
 	}
-	handleChange = (value)=> {
+	handleChange = (value) => {
 		console.log(`selected ${value}`);
 		this.setState({
 			search_type: value,
 		})
 	}
-	
-	handleReviewAuth = (value)=> {
+
+	handleReviewAuth = (value) => {
 		console.log(`selected ${value}`);
 		this.setState({
 			review_type: value,
@@ -444,15 +458,16 @@ export default class Authorisations extends React.Component{
 			review_description: null,
 			review_type: 1,
 			reason_description: '',
+			isTimeout: false,
 		});
 	};
 	handleOk = () => {
-		const {review_type, reason_description, listData, modalType} = this.state;
-		if(review_type === 0 && !reason_description){
+		const { review_type, reason_description, listData, modalType } = this.state;
+		if (review_type === 0 && !reason_description) {
 			message.warning('请填写拒绝原因');
 			return;
 		}
-		if(modalType === 1 && !this.selItem?.identifyId){
+		if (modalType === 1 && !this.selItem?.identifyId) {
 			message.warning('该用户未提交认证，无需审核');
 			this.handleReviewEnd();
 			return;
@@ -461,7 +476,7 @@ export default class Authorisations extends React.Component{
 			confirmLoading: true,
 		});
 		//0注销1身份证2头像3封号
-		if(modalType === 2){
+		if (modalType === 2) {
 			let params = {
 				avatar_state: review_type,
 				avatar_reason: review_type === 0 ? reason_description : '尊敬的用户，您的头像经审核已予通过。',
@@ -473,25 +488,25 @@ export default class Authorisations extends React.Component{
 			Http.put(
 				`/users/${this.selItem?.id ?? ''}`,
 				params,
-				true).then(res=>{
-				//设置头像操作完成
-				this.handleReviewEnd();
-				message.success('审核操作成功');
-				let index = listData.findIndex((item => item.id === this.selItem?.id));
-				if(index !== -1){
-					listData[index].avatar_state = params?.avatar_state;
-					listData[index].avatar_reason = params?.avatar_reason;
-				}
-				this.forceUpdate();
-				this.sendSystemRefresh(params?.avatar_reason);
-			}).catch(err=>{
-				this.handleReviewEnd();
-				message.error('审核操作发生错误');
-				console.log('什么错误：', err);
-			})
+				true).then(res => {
+					//设置头像操作完成
+					this.handleReviewEnd();
+					message.success('审核操作成功');
+					let index = listData.findIndex((item => item.id === this.selItem?.id));
+					if (index !== -1) {
+						listData[index].avatar_state = params?.avatar_state;
+						listData[index].avatar_reason = params?.avatar_reason;
+					}
+					this.forceUpdate();
+					this.sendSystemRefresh(params?.avatar_reason);
+				}).catch(err => {
+					this.handleReviewEnd();
+					message.error('审核操作发生错误');
+					console.log('什么错误：', err);
+				})
 		}
-		if(modalType === 1){
-			if(!this.user_birthday && review_type !== 0){
+		if (modalType === 1) {
+			if (!this.user_birthday && review_type !== 0) {
 				message.warning('请选择用户生日');
 				this.setState({
 					confirmLoading: false,
@@ -500,95 +515,96 @@ export default class Authorisations extends React.Component{
 			}
 			let params = {
 				age: this.user_birthday,
+				isTimeout: this.state?.isTimeout,
 				status: review_type === 0 ? 3 : 2,
 				reason: review_type === 0 ? reason_description : '尊敬的用户，您的身份信息经审核已予通过。',
 			};
 			Http.put(
 				`/classes/IdentifyAuth/${this.selItem?.identifyId ?? ''}`,
 				params,
-				true).then(res=>{
-				Http.put(
-					`/users/${this.selItem?.id ?? ''}`,
-					{isAuthentication: review_type == 0 ? false : true, age: this.user_birthday,},
-					true).then(res=>{
-					//设置身份操作完成
-					this.handleReviewEnd();
-					message.success('审核操作成功');
-					let index = listData.findIndex((item => item.id === this.selItem?.id));
-					if(index !== -1){
-						listData[index].auth_state = params?.status;
-						listData[index].auth_reason = params?.reason;
-					}
-					this.forceUpdate();
-					this.sendSystemRefresh(params?.reason);
-				}).catch(err=>{
+				true).then(res => {
+					Http.put(
+						`/users/${this.selItem?.id ?? ''}`,
+						{ isAuthentication: review_type == 0 ? false : true, age: this.user_birthday, },
+						true).then(res => {
+							//设置身份操作完成
+							this.handleReviewEnd();
+							message.success('审核操作成功');
+							let index = listData.findIndex((item => item.id === this.selItem?.id));
+							if (index !== -1) {
+								listData[index].auth_state = params?.status;
+								listData[index].auth_reason = params?.reason;
+							}
+							this.forceUpdate();
+							this.sendSystemRefresh(params?.reason);
+						}).catch(err => {
+							this.handleReviewEnd();
+							message.error('审核操作发生错误');
+							console.log('什么错误：', err);
+						})
+				}).catch(err => {
 					this.handleReviewEnd();
 					message.error('审核操作发生错误');
 					console.log('什么错误：', err);
 				})
-			}).catch(err=>{
-				this.handleReviewEnd();
-				message.error('审核操作发生错误');
-				console.log('什么错误：', err);
-			})
 		}
-		if(modalType === 0){
+		if (modalType === 0) {
 			//用户若提交了注销，是不可能在线的，所以直接删除即可，无需发送消息
 			Http.delete(
 				`/users/${this.selItem?.id ?? ''}`,
-				true).then(res=>{
-				//设置头像操作完成
-				this.handleReviewEnd();
-				message.success('该用户基础数据删除成功');
-				let index = listData.findIndex((item => item.id === this.selItem?.id));
-				if(index !== -1){
-					listData?.splice(index, 1);
-				}
-				this.forceUpdate();
-			}).catch(err=>{
-				this.handleReviewEnd();
-				message.error('删除用户错误');
-				let index = listData.findIndex((item => item.id === this.selItem?.id));
-				if(index !== -1){
-					listData?.splice(index, 1);
-				}
-				this.forceUpdate();
-			})
+				true).then(res => {
+					//设置头像操作完成
+					this.handleReviewEnd();
+					message.success('该用户基础数据删除成功');
+					let index = listData.findIndex((item => item.id === this.selItem?.id));
+					if (index !== -1) {
+						listData?.splice(index, 1);
+					}
+					this.forceUpdate();
+				}).catch(err => {
+					this.handleReviewEnd();
+					message.error('删除用户错误');
+					let index = listData.findIndex((item => item.id === this.selItem?.id));
+					if (index !== -1) {
+						listData?.splice(index, 1);
+					}
+					this.forceUpdate();
+				})
 
 			//删除用户图片信息
-			this.selItem && [this.selItem?.avatarId, this.selItem?.auth_zmId, this.selItem?.auth_fmId].map((imgId=>{
-				if(!imgId)return;
+			this.selItem && [this.selItem?.avatarId, this.selItem?.auth_zmId, this.selItem?.auth_fmId].map((imgId => {
+				if (!imgId) return;
 				const file = LC.File.createWithoutData(imgId);
 				file.destroy();
 			}))
-			if(this.selItem?.identifyId){
+			if (this.selItem?.identifyId) {
 				const identifyAuth = LC.Object.createWithoutData("IdentifyAuth", this.selItem?.identifyId);
-			    identifyAuth.destroy();
+				identifyAuth.destroy();
 			}
 		}
-		if(modalType === 3){
+		if (modalType === 3) {
 			Http.put(
 				`/users/${this.selItem?.id ?? ''}`,
-				{isLocked: this.indexIsLocked},
-				true).then(res=>{
-				this.handleReviewEnd();
-				message.success(this.indexIsLocked ? '已完成封号处理' : '解除封号成功');
-				this.selItem.isLocked = this.indexIsLocked;
-				this.forceUpdate();
-				let reason_description = '因你存在严重的违规平台行为，已给予封号处理';
-				this.sendSystemRefresh(reason_description, 2);
-			}).catch(err=>{
-				this.handleReviewEnd();
-				message.error('封号处理发生错误');
-			})
+				{ isLocked: this.indexIsLocked },
+				true).then(res => {
+					this.handleReviewEnd();
+					message.success(this.indexIsLocked ? '已完成封号处理' : '解除封号成功');
+					this.selItem.isLocked = this.indexIsLocked;
+					this.forceUpdate();
+					let reason_description = '因你存在严重的违规平台行为，已给予封号处理';
+					this.sendSystemRefresh(reason_description, 2);
+				}).catch(err => {
+					this.handleReviewEnd();
+					message.error('封号处理发生错误');
+				})
 		}
 	};
-	sendSystemRefresh(reason_description, refreshType = 3){
-		IMClass?.getServiceConversationAndSendMsg(()=>{
+	sendSystemRefresh(reason_description, refreshType = 3) {
+		IMClass?.getServiceConversationAndSendMsg(() => {
 			console.log('完成对客户端指定用户的消息发送');
 		}, this.selItem?.id, reason_description, refreshType);
 	}
-	handleReviewEnd(){
+	handleReviewEnd() {
 		this.setState({
 			lockVisible: false,
 			confirmLoading: false,
