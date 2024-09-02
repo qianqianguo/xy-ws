@@ -5,8 +5,8 @@
     "agreement.js": "/xy-ws/static/js/agreement.12ddb685.chunk.js",
     "agreement.js.map": "/xy-ws/static/js/agreement.12ddb685.chunk.js.map",
     "main.css": "/xy-ws/static/css/main.ca365f71.chunk.css",
-    "main.js": "/xy-ws/static/js/main.d3169db1.chunk.js",
-    "main.js.map": "/xy-ws/static/js/main.d3169db1.chunk.js.map",
+    "main.js": "/xy-ws/static/js/main.19454bdb.chunk.js",
+    "main.js.map": "/xy-ws/static/js/main.19454bdb.chunk.js.map",
     "runtime-agreement.js": "/xy-ws/static/js/runtime-agreement.4472434f.js",
     "runtime-agreement.js.map": "/xy-ws/static/js/runtime-agreement.4472434f.js.map",
     "runtime-main.js": "/xy-ws/static/js/runtime-main.0c75a322.js",
@@ -34,6 +34,6 @@
     "static/css/5.888a64b2.chunk.css",
     "static/js/5.0edf2514.chunk.js",
     "static/css/main.ca365f71.chunk.css",
-    "static/js/main.d3169db1.chunk.js"
+    "static/js/main.19454bdb.chunk.js"
   ]
 }
