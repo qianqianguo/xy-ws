@@ -338,7 +338,7 @@ export default class Authorisations extends React.Component {
 							console.log(date, dateString);
 							this.user_birthday = {
 								"__type": "Date",
-								"iso": moment('1990-12-01').toISOString() //restAPI就是需要这种方式，累人
+								"iso": moment(dateString).toISOString() //restAPI就是需要这种方式，累人
 							};
 						}}
 					/>
@@ -429,6 +429,7 @@ export default class Authorisations extends React.Component {
 				isLocked: user?.isLocked,
 				vip_expiration_date: user?.vip_expiration_date,
 				sex: sex,
+				isNewUser: !(user?.new_user_deadline)
 			}
 			users.push(user_obj);
 		}
@@ -480,11 +481,13 @@ export default class Authorisations extends React.Component {
 			let params = {
 				avatar_state: review_type,
 				avatar_reason: review_type === 0 ? reason_description : '尊敬的用户，您的头像经审核已予通过。',
-				new_user_deadline: {
+			};
+			if(this.selItem?.isNewUser && review_type !== 0){
+				params.new_user_deadline = {
 					"__type": "Date",
 					"iso": moment(new Date()).toISOString() //restAPI就是需要这种方式，累人
-				}, //审核头像通过，该用户变成7天新用户曝光给其他用户
-			};
+				}; //审核头像通过，该用户变成7天新用户曝光给其他用户
+			}
 			Http.put(
 				`/users/${this.selItem?.id ?? ''}`,
 				params,
@@ -514,18 +517,24 @@ export default class Authorisations extends React.Component {
 				return;
 			}
 			let params = {
-				age: this.user_birthday,
 				isTimeout: this.state?.isTimeout,
 				status: review_type === 0 ? 3 : 2,
 				reason: review_type === 0 ? reason_description : '尊敬的用户，您的身份信息经审核已予通过。',
 			};
+			let extraParams = {
+				isAuthentication: review_type == 0 ? false : true,
+			}
+			if(params?.status === 2){
+				params.age = this.user_birthday;
+				extraParams.age = this.user_birthday;
+			}
 			Http.put(
 				`/classes/IdentifyAuth/${this.selItem?.identifyId ?? ''}`,
 				params,
 				true).then(res => {
 					Http.put(
 						`/users/${this.selItem?.id ?? ''}`,
-						{ isAuthentication: review_type == 0 ? false : true, age: this.user_birthday, },
+						extraParams,
 						true).then(res => {
 							//设置身份操作完成
 							this.handleReviewEnd();
