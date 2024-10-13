@@ -102,133 +102,146 @@ export default class Authorisations extends React.Component {
 					footer={
 						<div />
 					}
-					renderItem={item => (
-						<List.Item
-							key={item.id}
-							actions={[]}
-							extra={
-								<div>
-									<Zmage
-										style={{ margin: 12 }}
-										width={256}
-										alt="auth"
-										src={item?.auth_zm !== '' ? item?.auth_zm : placePic}
-									/>
-									<Zmage
-										style={{ margin: 12 }}
-										width={256}
-										alt="auth"
-										src={item?.auth_fm !== '' ? item?.auth_fm : placePic}
-									/>
+					renderItem={item =>{
+						return <List.Item
+						key={item.id}
+						actions={[]}
+						extra={
+							<div>
+								<Zmage
+									style={{ margin: 12 }}
+									width={256}
+									alt="auth"
+									src={item?.auth_zm !== '' ? item?.auth_zm : placePic}
+								/>
+								<Zmage
+									style={{ margin: 12 }}
+									width={256}
+									alt="auth"
+									src={item?.auth_fm !== '' ? item?.auth_fm : placePic}
+								/>
+							</div>
+						}
+					>
+						<List.Item.Meta
+							avatar={
+								<Avatar
+									src={item?.avatar}
+									onClick={() => Zmage.browsing({ src: item.avatar })}
+								/>
+							}
+							title={item?.nickname}
+							description={
+								<div style={{}}>
+									{item.introduce}
 								</div>
 							}
-						>
-							<List.Item.Meta
-								avatar={
-									<Avatar
-										src={item?.avatar}
-										onClick={() => Zmage.browsing({ src: item.avatar })}
-									/>
-								}
-								title={item?.nickname}
-								description={
-									<div style={{}}>
-										{item.introduce}
-									</div>
-								}
-							/>
-							<div style={{ alignItems: 'space-between' }}>
-								<div style={{ color: 'gray' }}>
-									性别：<span style={{ color: 'darkgray' }}>{item?.sex == 1 ? '男' : '女'}</span>
-								</div>
-								<br />
-								<div style={{ color: 'gray' }}>
-									手机号码：<span style={{ color: 'darkgray' }}>{item?.mobilePhoneNumber}</span>
-								</div>
-								<br />
-								<Card style={{ backgroundColor: "ghostwhite" }}>
-									<div style={{ color: 'gray' }}>
-										头像认证状态：<span style={{ color: 'darkgray' }}>{item?.avatar_state === 1 ? '待审核' : item?.avatar_state === 2 ? '已认证' : '未认证'}</span>
-										<a
-											style={{ color: 'blue', marginLeft: 22 }}
-											onClick={() => {
-												this.selItem = item;
-												this.showModal('审核头像信息', 2);
-											}}>审核</a>
-									</div>
-									<div style={{ color: 'gray' }}>
-										<br />
-										上次认证描述：<span style={{ color: 'darkgray' }}>{item?.avatar_reason ?? '未提审认证'}</span>
-									</div>
-								</Card>
-								<br />
-								<Card style={{ backgroundColor: "ghostwhite" }}>
-									<div style={{ color: 'gray' }}>
-										身份认证状态：<span style={{ color: 'darkgray' }}>
-											{item?.auth_state === 1 ? '待审核' : item?.auth_state === 2 ? '已认证' : item?.auth_state === 3 ? '未通过' : '未认证'}
-										</span>
-										<a
-											style={{ color: 'blue', marginLeft: 22 }}
-											onClick={() => {
-												this.selItem = item;
-												this.showModal('审核身份信息', 1);
-											}}>审核</a>
-									</div>
-									<div style={{ color: 'gray' }}>
-										<br />
-										上次认证描述：<span style={{ color: 'darkgray' }}>{item?.auth_reason ?? '未提审认证'}</span>
-									</div>
-								</Card>
-								<br />
-								<Card style={{ backgroundColor: "ghostwhite" }}>
-									<div style={{ color: 'gray' }}>
-										用户申请注销：<span style={{ color: 'darkgray' }}>{item?.isLogOff ? '已申请' : '未申请'}</span>
-										{
-											<a style={{ color: 'blue', marginLeft: 22 }} onClick={() => {
-												this.selItem = item;
-												this.showModal('提示', 0);
-											}}>注销</a>
-										}
-									</div>
-									{
-										item?.isLogOff && <div style={{ color: 'gray' }}>
-											<br />
-											提交注销日期：<span style={{ color: 'darkgray' }}>
-												{
-													item?.logOffDate
-														? moment(item?.logOffDate).format('YYYY.MM.DD  HH:mm:ss')
-														: 'xxxx.xx.xx'
-												}
-											</span>
-										</div>
-									}
-								</Card>
-								<br />
-								<Card style={{ backgroundColor: "ghostwhite" }}>
-									<div style={{ color: 'gray' }}>
-										会员截止时间：<span style={{ color: 'darkgray' }}>{
-											item?.vip_expiration_date
-												? moment(item?.vip_expiration_date).format('YYYY.MM.DD  HH:mm:ss')
-												: 'xxxx.xx.xx'
-										}</span>
-									</div>
-									<br />
-									<div style={{ color: 'gray' }}>
-										是否给予封号：
-										<Switch
-											style={{}}
-											checked={item?.isLocked}
-											onClick={(isLocked) => {
-												this.selItem = item;
-												this.indexIsLocked = isLocked;
-												this.showModal('提示', 3);
-											}}
-										/>
-									</div>
-								</Card>
+						/>
+						<div style={{ alignItems: 'space-between' }}>
+							<div style={{ color: 'gray' }}>
+								注册时间：<span style={{ color: 'darkgray' }}>{moment(item?.createdAt).format('YYYY.MM.DD HH:mm:ss')}</span>
 							</div>
-						</List.Item>
-					)}
+							<br />
+							<div style={{ color: 'gray' }}>
+								注册手机平台：<span style={{ color: 'darkgray' }}>{item?.platform}</span>
+							</div>
+							<br />
+							<div style={{ color: 'gray' }}>
+								新用户截止时间：<span style={{ color: 'darkgray' }}>{item?.new_user_deadline 
+								? moment(item?.new_user_deadline).format('YYYY.MM.DD HH:mm:ss') : '未设置'}</span>
+							</div>
+							<br />
+							<div style={{ color: 'gray' }}>
+								性别：<span style={{ color: 'darkgray' }}>{item?.sex == 1 ? '男' : '女'}</span>
+							</div>
+							<br />
+							<div style={{ color: 'gray' }}>
+								手机号码：<span style={{ color: 'darkgray' }}>{item?.mobilePhoneNumber}</span>
+							</div>
+							<br />
+							<Card style={{ backgroundColor: "ghostwhite" }}>
+								<div style={{ color: 'gray' }}>
+									头像认证状态：<span style={{ color: 'darkgray' }}>{item?.avatar_state === 1 ? '待审核' : item?.avatar_state === 2 ? '已认证' : '未认证'}</span>
+									<a
+										style={{ color: 'blue', marginLeft: 22 }}
+										onClick={() => {
+											this.selItem = item;
+											this.showModal('审核头像信息', 2);
+										}}>审核</a>
+								</div>
+								<div style={{ color: 'gray' }}>
+									<br />
+									上次认证描述：<span style={{ color: 'darkgray' }}>{item?.avatar_reason ?? '未提审认证'}</span>
+								</div>
+							</Card>
+							<br />
+							<Card style={{ backgroundColor: "ghostwhite" }}>
+								<div style={{ color: 'gray' }}>
+									身份认证状态：<span style={{ color: 'darkgray' }}>
+										{item?.auth_state === 1 ? '待审核' : item?.auth_state === 2 ? '已认证' : item?.auth_state === 3 ? '未通过' : '未认证'}
+									</span>
+									<a
+										style={{ color: 'blue', marginLeft: 22 }}
+										onClick={() => {
+											this.selItem = item;
+											this.showModal('审核身份信息', 1);
+										}}>审核</a>
+								</div>
+								<div style={{ color: 'gray' }}>
+									<br />
+									上次认证描述：<span style={{ color: 'darkgray' }}>{item?.auth_reason ?? '未提审认证'}</span>
+								</div>
+							</Card>
+							<br />
+							<Card style={{ backgroundColor: "ghostwhite" }}>
+								<div style={{ color: 'gray' }}>
+									用户申请注销：<span style={{ color: 'darkgray' }}>{item?.isLogOff ? '已申请' : '未申请'}</span>
+									{
+										<a style={{ color: 'blue', marginLeft: 22 }} onClick={() => {
+											this.selItem = item;
+											this.showModal('提示', 0);
+										}}>注销</a>
+									}
+								</div>
+								{
+									item?.isLogOff && <div style={{ color: 'gray' }}>
+										<br />
+										提交注销日期：<span style={{ color: 'darkgray' }}>
+											{
+												item?.logOffDate
+													? moment(item?.logOffDate).format('YYYY.MM.DD  HH:mm:ss')
+													: 'xxxx.xx.xx'
+											}
+										</span>
+									</div>
+								}
+							</Card>
+							<br />
+							<Card style={{ backgroundColor: "ghostwhite" }}>
+								<div style={{ color: 'gray' }}>
+									会员截止时间：<span style={{ color: 'darkgray' }}>{
+										item?.vip_expiration_date
+											? moment(item?.vip_expiration_date).format('YYYY.MM.DD  HH:mm:ss')
+											: 'xxxx.xx.xx'
+									}</span>
+								</div>
+								<br />
+								<div style={{ color: 'gray' }}>
+									是否给予封号：
+									<Switch
+										style={{}}
+										checked={item?.isLocked}
+										onClick={(isLocked) => {
+											this.selItem = item;
+											this.indexIsLocked = isLocked;
+											this.showModal('提示', 3);
+										}}
+									/>
+								</div>
+							</Card>
+						</div>
+					</List.Item>
+					}}
 				/>
 				<Drawer
 					placement="top"
@@ -405,9 +418,9 @@ export default class Authorisations extends React.Component {
 			let uid = isIdentify ? r[i]?.attributes?.user?.id : r[i]?.id;
 			let identifyId = isIdentify ? r[i]?.id : user?.identifyAuth?.id;
 			let auth_reason = isIdentify ? r[i]?.attributes?.reason : (user?.identifyAuth?.attributes?.reason || '未提审认证');
-
+			let createdAt = r[i]?.createdAt;
+			let platform = user?.deviceInfo?.platform;
 			let sex = user?.sex;
-
 			let user_obj = {
 				id: uid,
 				identifyId: identifyId,
@@ -429,10 +442,14 @@ export default class Authorisations extends React.Component {
 				isLocked: user?.isLocked,
 				vip_expiration_date: user?.vip_expiration_date,
 				sex: sex,
-				isNewUser: !(user?.new_user_deadline)
+				isNewUser: !(user?.new_user_deadline),
+				new_user_deadline: user.new_user_deadline,
+				createdAt: createdAt,
+				platform: platform,
 			}
 			users.push(user_obj);
 		}
+
 		this.setState({
 			listData: users,
 		});
@@ -478,14 +495,19 @@ export default class Authorisations extends React.Component {
 		});
 		//0注销1身份证2头像3封号
 		if (modalType === 2) {
+			let date = new Date();
 			let params = {
 				avatar_state: review_type,
 				avatar_reason: review_type === 0 ? reason_description : '尊敬的用户，您的头像经审核已予通过。',
 			};
-			if(this.selItem?.isNewUser && review_type !== 0){
+			if (review_type !== 0) {
+				params.isExposure = true; //获得曝光
+			}
+			if (this.selItem?.isNewUser && review_type !== 0) {
+				// date.setDate(date.getDate() + 7); 暂时不设置
 				params.new_user_deadline = {
 					"__type": "Date",
-					"iso": moment(new Date()).toISOString() //restAPI就是需要这种方式，累人
+					"iso": moment(date).toISOString() //restAPI就是需要这种方式，累人
 				}; //审核头像通过，该用户变成7天新用户曝光给其他用户
 			}
 			Http.put(
@@ -499,6 +521,7 @@ export default class Authorisations extends React.Component {
 					if (index !== -1) {
 						listData[index].avatar_state = params?.avatar_state;
 						listData[index].avatar_reason = params?.avatar_reason;
+						listData[index].new_user_deadline = date;
 					}
 					this.forceUpdate();
 					this.sendSystemRefresh(params?.avatar_reason);
@@ -524,7 +547,7 @@ export default class Authorisations extends React.Component {
 			let extraParams = {
 				isAuthentication: review_type == 0 ? false : true,
 			}
-			if(params?.status === 2){
+			if (params?.status === 2) {
 				params.age = this.user_birthday;
 				extraParams.age = this.user_birthday;
 			}
